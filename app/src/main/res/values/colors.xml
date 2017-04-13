@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="cover_ends">#0175E7</color>
+    <color name="cover_middle">#15A0F5</color>
+    <color name="bg_start_setup_unpressed">#8080FF</color>
+    <color name="bg_start_setup_pressed">#8000FF</color>
+    <color name="toast_text">#B97A57</color>
+    <color name="dialog_alternative_message">#B97A57</color>
+    <color name="popup_header_line">#A6D8F5</color>
+    <color name="popup_separate_line">#EDEDED</color>
+</resources>

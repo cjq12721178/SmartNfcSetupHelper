@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="project"
+        android:title="@string/setup_project">
+        <Preference
+            android:key="add_project"
+            android:title="@string/add_project"
+            android:summary="@string/add_project_summary"/>
+    </PreferenceCategory>
+</PreferenceScreen>

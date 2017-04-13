@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="@dimen/width_dialog_base"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ic_dialog_bg"
+    android:padding="@dimen/padding_small">
+
+    <ViewStub
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/vs_title_dialog_base"
+        android:layout="@layout/tv_title"/>
+</LinearLayout>

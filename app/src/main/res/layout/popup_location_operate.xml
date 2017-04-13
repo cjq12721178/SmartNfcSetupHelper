@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ic_dialog_bg">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/popup_header_line"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rename"
+        android:textSize="@dimen/size_text_dialog"
+        android:padding="@dimen/padding_micro"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/tv_rename_location"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/popup_separate_line"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete"
+        android:textSize="@dimen/size_text_dialog"
+        android:padding="@dimen/padding_micro"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/tv_delete_location"
+        android:gravity="center"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/popup_separate_line"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:textSize="@dimen/size_text_dialog"
+        android:padding="@dimen/padding_micro"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/tv_cancel"
+        android:gravity="center"/>
+</LinearLayout>
