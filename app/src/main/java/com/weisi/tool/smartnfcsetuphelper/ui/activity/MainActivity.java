@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivityForResult(new Intent(MainActivity.this, SetupActivity.class), REQUEST_CODE_SETUP);
                     } else {
                         ConfirmDialog dialog = new ConfirmDialog();
-                        dialog.show(getFragmentManager(),
+                        dialog.show(getSupportFragmentManager(),
                                 "no_project_to_setup",
                                 getString(R.string.no_project), false);
                     }

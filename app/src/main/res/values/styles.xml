@@ -8,6 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="MainActivityTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
+    <style name="SettingActivityTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+    </style>
 
     <!-- alternative dialog theme -->
     <style

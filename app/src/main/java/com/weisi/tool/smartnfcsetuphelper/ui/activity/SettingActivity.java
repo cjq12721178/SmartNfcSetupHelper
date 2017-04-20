@@ -13,7 +13,7 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().replace(android.R.id.content,
+            getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
                     new SettingFragment())
                     .commit();
         }

@@ -1,9 +1,9 @@
 package com.weisi.tool.smartnfcsetuphelper.ui.dialog;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.weisi.tool.smartnfcsetuphelper.R;
 import com.weisi.tool.smartnfcsetuphelper.ui.adapter.RecyclerViewBaseAdapter;
 import com.weisi.tool.smartnfcsetuphelper.ui.decoration.SpaceItemDecoration;
-import com.weisi.tool.smartnfcsetuphelper.ui.dialog.BaseDialog;
 
 /**
  * Created by KAT on 2017/4/11.

@@ -1,14 +1,12 @@
 package com.weisi.tool.smartnfcsetuphelper.ui.activity;
 
-import android.app.FragmentTransaction;
 import android.support.annotation.StringRes;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,12 +77,12 @@ public class SetupActivity
     }
 
     private void initSetupFragment() {
-        mSetupFragment = (SetupFragment) getFragmentManager().findFragmentById(R.id.fm_setup);
+        mSetupFragment = (SetupFragment) getSupportFragmentManager().findFragmentById(R.id.fm_setup);
         showSetupFragment(false);
     }
 
     private void showSetupFragment(boolean isShow) {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (isShow) {
             transaction.show(mSetupFragment);
         } else {
@@ -99,7 +97,7 @@ public class SetupActivity
             if (schemesName.length > 0) {
                 ConfirmDialog dialog = new ConfirmDialog();
                 dialog.getArguments().putStringArray(ARGUMENT_KEY_SCHEMES_NAME, schemesName);
-                dialog.show(getFragmentManager(),
+                dialog.show(getSupportFragmentManager(),
                         DIALOG_TAG_IS_START_NEW_SCHEME,
                         getString(R.string.is_create_scheme));
             } else {
@@ -112,7 +110,7 @@ public class SetupActivity
 
     private void startNewScheme() {
         EditDialog editDialog = new EditDialog();
-        editDialog.show(getFragmentManager(),
+        editDialog.show(getSupportFragmentManager(),
                 DIALOG_TAG_SET_SCHEME_NAME,
                 getString(R.string.name_scheme),
                 getDefaultSetupName());
@@ -129,7 +127,7 @@ public class SetupActivity
     private boolean judgeInputNameEmpty(String name, @StringRes int promptInfoStrId) {
         if (TextUtils.isEmpty(name)) {
             ConfirmDialog confirmDialog = new ConfirmDialog();
-            confirmDialog.show(getFragmentManager(),
+            confirmDialog.show(getSupportFragmentManager(),
                     "check_name_empty",
                     getString(promptInfoStrId),
                     false);
@@ -141,7 +139,7 @@ public class SetupActivity
     private boolean judgeInputLocationNameDuplicated(String locationName) {
         if (mSetupScheme.containsLocation(locationName)) {
             ConfirmDialog confirmDialog = new ConfirmDialog();
-            confirmDialog.show(getFragmentManager(),
+            confirmDialog.show(getSupportFragmentManager(),
                     "check_location_name_duplicated",
                     getString(R.string.location_name_can_not_be_duplicated),
                     false);
@@ -162,7 +160,7 @@ public class SetupActivity
         mSetupScheme = SetupScheme.importScheme(this, SetupProject.getCurrentProjectName(this), schemeName);
         if (mSetupScheme == null) {
             ConfirmDialog dialog = new ConfirmDialog();
-            dialog.show(getFragmentManager(), getString(R.string.import_scheme_failed));
+            dialog.show(getSupportFragmentManager(), getString(R.string.import_scheme_failed));
         }
     }
 
@@ -203,7 +201,7 @@ public class SetupActivity
     public void onItemClick(View item, int position) {
         if (position == mSetupScheme.getLocations().size()) {
             EditDialog editDialog = new EditDialog();
-            editDialog.show(getFragmentManager(),
+            editDialog.show(getSupportFragmentManager(),
                     DIALOG_TAG_SET_LOCATION_NAME,
                     getString(R.string.input_location_name),
                     getString(R.string.new_location));
@@ -238,7 +236,7 @@ public class SetupActivity
                 saveSchemeAndExit();
             } else {
                 ConfirmDialog dialog = new ConfirmDialog();
-                dialog.show(getFragmentManager(),
+                dialog.show(getSupportFragmentManager(),
                         DIALOG_TAG_EXIT_AND_SAVE_SCHEME,
                         getString(R.string.locations_lack_info));
             }
@@ -248,7 +246,7 @@ public class SetupActivity
                 onBackSetupActivity();
             } else {
                 ConfirmDialog dialog = new ConfirmDialog();
-                dialog.show(getFragmentManager(),
+                dialog.show(getSupportFragmentManager(),
                         DIALOG_TAG_CHECK_LOCATION_INFO,
                         getString(R.string.location_contains_unfull_info));
             }
@@ -259,7 +257,7 @@ public class SetupActivity
         if (mSetupScheme.exists(this, SetupProject.getCurrentProjectName(this)) &&
                 mSchemeChanged) {
             ConfirmDialog dialog = new ConfirmDialog();
-            dialog.show(getFragmentManager(),
+            dialog.show(getSupportFragmentManager(),
                     DIALOG_TAG_IS_SAVE_SCHEME,
                     getString(R.string.scheme_has_changed));
         } else {
@@ -356,7 +354,7 @@ public class SetupActivity
                     onSchemeInitCompleted(null);
                 } else {
                     ListDialog listDialog = new ListDialog();
-                    listDialog.show(getFragmentManager(),
+                    listDialog.show(getSupportFragmentManager(),
                             DIALOG_TAG_SELECT_SCHEME,
                             getString(R.string.select_scheme),
                             schemesName);
@@ -386,7 +384,7 @@ public class SetupActivity
                 Location locationToRename = mSchemeAdapter.getSelectedLocation();
                 if (locationToRename != null) {
                     EditDialog dialog = new EditDialog();
-                    dialog.show(getFragmentManager(),
+                    dialog.show(getSupportFragmentManager(),
                             DIALOG_TAG_RENAME_LOCATION,
                             getString(R.string.rename_location),
                             locationToRename.getName());

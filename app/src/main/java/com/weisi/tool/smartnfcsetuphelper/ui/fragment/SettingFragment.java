@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
+
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.text.TextUtils;
 
 import com.weisi.tool.smartnfcsetuphelper.R;
@@ -22,7 +23,7 @@ import com.weisi.tool.smartnfcsetuphelper.ui.toast.Prompter;
 import com.weisi.tool.smartnfcsetuphelper.util.Logger;
 
 public class SettingFragment
-        extends PreferenceFragment
+        extends PreferenceFragmentCompat
         implements BaseDialog.OnOkClickListener,
         EditDialog.OnContentReceiver {
 
@@ -43,9 +44,16 @@ public class SettingFragment
 
     private PreferenceCategory mProjectCategory;
 
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        getPreferenceManager().setSharedPreferencesName("setting");
+//        addPreferencesFromResource(R.xml.setting);
+//        initProjectCategory();
+//    }
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getPreferenceManager().setSharedPreferencesName("setting");
         addPreferencesFromResource(R.xml.setting);
         initProjectCategory();
