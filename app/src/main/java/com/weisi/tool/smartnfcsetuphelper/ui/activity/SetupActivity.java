@@ -28,6 +28,7 @@ import com.weisi.tool.smartnfcsetuphelper.ui.fragment.SetupFragment;
 import com.weisi.tool.smartnfcsetuphelper.ui.toast.Prompter;
 import com.weisi.tool.smartnfcsetuphelper.util.Logger;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SetupActivity
@@ -39,9 +40,6 @@ public class SetupActivity
         EditDialog.OnContentReceiver,
         ListDialog.OnItemSelectedListener, View.OnClickListener {
 
-    private static final String ARGUMENT_KEY_SCHEME = "scheme";
-    private static final String ARGUMENT_KEY_SELECTED_INDEX = "selected_index";
-    private static final String ARGUMENT_KEY_SCHEME_CHANGED = "changed";
     private static final String DIALOG_TAG_IS_START_NEW_SCHEME = "is_start_new_scheme";
     private static final String DIALOG_TAG_SET_SCHEME_NAME = "set_scheme_name";
     private static final String DIALOG_TAG_SET_LOCATION_NAME = "set_location_name";
@@ -50,7 +48,12 @@ public class SetupActivity
     private static final String DIALOG_TAG_IS_SAVE_SCHEME = "is_save_scheme";
     private static final String DIALOG_TAG_SELECT_SCHEME = "select_scheme";
     private static final String DIALOG_TAG_RENAME_LOCATION = "rename_location";
+
+    private static final String ARGUMENT_KEY_SCHEME = "scheme";
+    private static final String ARGUMENT_KEY_SELECTED_INDEX = "selected_index";
+    private static final String ARGUMENT_KEY_SCHEME_CHANGED = "changed";
     private static final String ARGUMENT_KEY_SCHEMES_NAME = "schemes_name";
+    private static final String ARGUMENT_KEY_EXIST_SCHEME_COUNT = "exist_scheme_count";
 
     private SetupScheme mSetupScheme;
     private SchemeAdapter mSchemeAdapter;
@@ -96,24 +99,29 @@ public class SetupActivity
             final String[] schemesName = Environment.getSchemesName(this, SetupProject.getCurrentProjectName(this));
             if (schemesName.length > 0) {
                 ConfirmDialog dialog = new ConfirmDialog();
-                dialog.getArguments().putStringArray(ARGUMENT_KEY_SCHEMES_NAME, schemesName);
+                Bundle arguments = dialog.getArguments();
+                arguments.putStringArray(ARGUMENT_KEY_SCHEMES_NAME, schemesName);
+                arguments.putInt(ARGUMENT_KEY_EXIST_SCHEME_COUNT, schemesName.length);
                 dialog.show(getSupportFragmentManager(),
                         DIALOG_TAG_IS_START_NEW_SCHEME,
                         getString(R.string.is_create_scheme));
             } else {
-                startNewScheme();
+                startNewScheme(0);
             }
         } else {
             onSchemeInitCompleted(savedInstanceState);
         }
     }
 
-    private void startNewScheme() {
+    private void startNewScheme(int existSchemeCount) {
         EditDialog editDialog = new EditDialog();
+        editDialog.setCancelable(false);
+        editDialog.setExitType(BaseDialog.ExitType.OK);
+        //editDialog.getArguments().putInt(ARGUMENT_KEY_EXIST_SCHEME_COUNT, existSchemeCount);
         editDialog.show(getSupportFragmentManager(),
                 DIALOG_TAG_SET_SCHEME_NAME,
                 getString(R.string.name_scheme),
-                getDefaultSetupName());
+                getDefaultSetupName(existSchemeCount));
     }
 
     private boolean judgeInputSchemeNameEmpty(String schemeName) {
@@ -148,8 +156,24 @@ public class SetupActivity
         return true;
     }
 
-    private String getDefaultSetupName() {
-        return SetupProject.getCurrentProjectName(this) + "方案";
+    private boolean judgeInputSchemeNameDuplicated(String schemeName) {
+        if (Arrays.asList(Environment.getSchemesName(this,
+                SetupProject.getCurrentProjectName(this)))
+                .contains(schemeName)) {
+            ConfirmDialog confirmDialog = new ConfirmDialog();
+            confirmDialog.show(getSupportFragmentManager(),
+                    "check_scheme_name_duplicated",
+                    getString(R.string.scheme_name_can_not_be_duplicated),
+                    false);
+            return false;
+        }
+        return true;
+    }
+
+    private String getDefaultSetupName(int existSchemeCount) {
+        return SetupProject.getCurrentProjectName(this) +
+                "方案" +
+                (existSchemeCount <= 0 ? "" : existSchemeCount + 1);
     }
 
     private void createSetupScheme(String schemeName) {
@@ -254,12 +278,15 @@ public class SetupActivity
     }
 
     private void saveSchemeAndExit() {
-        if (mSetupScheme.exists(this, SetupProject.getCurrentProjectName(this)) &&
-                mSchemeChanged) {
-            ConfirmDialog dialog = new ConfirmDialog();
-            dialog.show(getSupportFragmentManager(),
-                    DIALOG_TAG_IS_SAVE_SCHEME,
-                    getString(R.string.scheme_has_changed));
+        if (mSetupScheme.exists(this, SetupProject.getCurrentProjectName(this))) {
+            if (mSchemeChanged) {
+                ConfirmDialog dialog = new ConfirmDialog();
+                dialog.show(getSupportFragmentManager(),
+                        DIALOG_TAG_IS_SAVE_SCHEME,
+                        getString(R.string.scheme_has_changed));
+            } else {
+                super.onBackPressed();
+            }
         } else {
             saveSchemeAndExitImp();
         }
@@ -295,6 +322,8 @@ public class SetupActivity
             case DIALOG_TAG_SET_SCHEME_NAME:
                 if (!judgeInputSchemeNameEmpty(newValue))
                     return false;
+                if (!judgeInputSchemeNameDuplicated(newValue))
+                    return false;
                 createSetupScheme(newValue);
                 onSchemeInitCompleted(null);
                 break;
@@ -329,7 +358,7 @@ public class SetupActivity
     public boolean onOkClick(BaseDialog dialog) {
         switch (dialog.getTag()) {
             case DIALOG_TAG_IS_START_NEW_SCHEME:
-                startNewScheme();
+                startNewScheme(dialog.getArguments().getInt(ARGUMENT_KEY_EXIST_SCHEME_COUNT));
                 break;
             case DIALOG_TAG_EXIT_AND_SAVE_SCHEME:
                 saveSchemeAndExit();
@@ -360,9 +389,8 @@ public class SetupActivity
                             schemesName);
                 }
                 break;
-            case DIALOG_TAG_SET_SCHEME_NAME:
-                createSetupScheme(getDefaultSetupName());
-                onSchemeInitCompleted(null);
+            case DIALOG_TAG_IS_SAVE_SCHEME:
+                super.onBackPressed();
                 break;
         }
     }

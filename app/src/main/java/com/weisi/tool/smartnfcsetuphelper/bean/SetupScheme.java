@@ -227,10 +227,12 @@ public class SetupScheme implements Parcelable {
                         location.getDevices()) {
                     serializer.startTag(null, XML_TAG_DEVICE);
                     serializer.startTag(null, XML_TAG_BLE_ADDRESS);
-                    serializer.text(device != null ? device.getBleAddress() : "");
+                    String bleAddress = device != null ? device.getBleAddress() : "";
+                    serializer.text(bleAddress != null ? bleAddress : "");
                     serializer.endTag(null, XML_TAG_BLE_ADDRESS);
                     serializer.startTag(null, XML_TAG_POSITION);
-                    serializer.text(device != null ? device.getPosition() : "");
+                    String position = device != null ? device.getPosition() : "";
+                    serializer.text(position != null ? position : "");
                     serializer.endTag(null, XML_TAG_POSITION);
                     serializer.endTag(null, XML_TAG_DEVICE);
                 }

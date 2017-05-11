@@ -29,7 +29,7 @@ import com.weisi.tool.smartnfcsetuphelper.R;
  */
 public abstract class BaseDialog extends DialogFragment {
 
-    protected enum ExitType {
+    public enum ExitType {
         NULL(0),
         OK_CANCEL(R.layout.group_ok_cancel),
         OK(R.layout.group_ok);

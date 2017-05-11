@@ -26,13 +26,14 @@ import com.weisi.tool.smartnfcsetuphelper.util.Logger;
 public class SetupFragment extends Fragment implements NfcReader.OnDataReceivedListener {
 
     private static final String ARGUMENT_KEY_LOCATION = "location";
-    private Location mLocation;
+    //private Location mLocation;
     private LocationAdapter mLocationAdapter;
     private StringBuilder mBuilder = new StringBuilder();
     private NfcReader mNfcReader;
+    private Location mLocation = new Location("位置");
 
     public void setLocation(Location location) {
-        mLocation = location;
+        mLocation = new Location(location);
     }
 
     public Location getLocation() {

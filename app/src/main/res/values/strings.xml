@@ -49,6 +49,7 @@
     <string name="rename">重命名</string>
     <string name="delete">删除</string>
     <string name="rename_location">重命名安装地点</string>
+    <string name="scheme_name_can_not_be_duplicated">安装方案名称不得重复</string>
     <string-array name="project_entry">
         <item name="project_entry_select">启用</item>
         <item name="project_entry_rename">重命名</item>

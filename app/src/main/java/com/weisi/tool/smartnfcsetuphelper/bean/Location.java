@@ -19,6 +19,15 @@ public class Location implements Parcelable {
         setName(name);
     }
 
+    public Location(Location other) {
+        mName = other.mName;
+        for (int i = 0;i < DEVICE_COUNT;++i) {
+            if (other.mDevices[i] != null) {
+                mDevices[i] = new Device(other.mDevices[i]);
+            }
+        }
+    }
+
     protected Location(Parcel in) {
         mName = in.readString();
         mDevices = in.createTypedArray(Device.CREATOR);
@@ -97,11 +106,7 @@ public class Location implements Parcelable {
             Location other = (Location)o;
             if (!mName.equals(other.mName))
                 return false;
-            if (mDevices == null)
-                return mDevices == other.mDevices;
-            if (other.mDevices == null)
-                return false;
-            return mDevices.equals(other.mDevices);
+            return Arrays.equals(mDevices, other.mDevices);
         } else if (o instanceof String) {
             String otherName = (String)o;
             return mName.equals(otherName);

@@ -15,6 +15,11 @@ public class Device implements Parcelable {
     public Device() {
     }
 
+    public Device(Device other) {
+        mBleAddress = other.mBleAddress;
+        mPosition = other.mPosition;
+    }
+
     protected Device(Parcel in) {
         mBleAddress = in.readString();
         mPosition = in.readString();
@@ -50,7 +55,7 @@ public class Device implements Parcelable {
         if (o instanceof Device) {
             Device other = (Device)o;
             return TextUtils.equals(mBleAddress, other.mBleAddress) &&
-                    TextUtils.equals(mPosition, other.getPosition());
+                    TextUtils.equals(mPosition, other.mPosition);
         }
         return false;
     }
