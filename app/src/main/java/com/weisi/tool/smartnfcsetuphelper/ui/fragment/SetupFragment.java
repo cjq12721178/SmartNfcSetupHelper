@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,7 +129,7 @@ public class SetupFragment extends Fragment implements NfcReader.OnDataReceivedL
         for (Device device :
                 mLocation.getDevices()) {
             if (device != null) {
-                if (device.getBleAddress() == null) {
+                if (TextUtils.isEmpty(device.getBleAddress())) {
                     device.setBleAddress(bleAddress);
                     return 0;
                 } else if (bleAddress.equals(device.getBleAddress())) {
