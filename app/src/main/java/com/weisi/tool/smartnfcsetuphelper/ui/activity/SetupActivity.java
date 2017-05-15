@@ -17,7 +17,7 @@ import com.weisi.tool.smartnfcsetuphelper.bean.Environment;
 import com.weisi.tool.smartnfcsetuphelper.bean.Location;
 import com.weisi.tool.smartnfcsetuphelper.bean.SetupProject;
 import com.weisi.tool.smartnfcsetuphelper.bean.SetupScheme;
-import com.weisi.tool.smartnfcsetuphelper.ui.adapter.SchemeAdapter;
+import com.weisi.tool.smartnfcsetuphelper.ui.adapter.SchemeSetupAdapter;
 import com.weisi.tool.smartnfcsetuphelper.ui.adapter.RecyclerViewBaseAdapter;
 import com.weisi.tool.smartnfcsetuphelper.ui.decoration.SpaceItemDecoration;
 import com.weisi.tool.smartnfcsetuphelper.ui.dialog.BaseDialog;
@@ -56,7 +56,7 @@ public class SetupActivity
     private static final String ARGUMENT_KEY_EXIST_SCHEME_COUNT = "exist_scheme_count";
 
     private SetupScheme mSetupScheme;
-    private SchemeAdapter mSchemeAdapter;
+    private SchemeSetupAdapter mSchemeSetupAdapter;
     private SetupFragment mSetupFragment;
     private boolean mSchemeChanged;
     private PopupWindow mPwLocationOperation;
@@ -73,7 +73,7 @@ public class SetupActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(ARGUMENT_KEY_SELECTED_INDEX,
-                mSchemeAdapter == null ? -1 : mSchemeAdapter.getSelectedIndex());
+                mSchemeSetupAdapter == null ? -1 : mSchemeSetupAdapter.getSelectedIndex());
         outState.putParcelable(ARGUMENT_KEY_SCHEME, mSetupScheme);
         outState.putBoolean(ARGUMENT_KEY_SCHEME_CHANGED, mSchemeChanged);
         super.onSaveInstanceState(outState);
@@ -213,12 +213,12 @@ public class SetupActivity
                 getDimensionPixelSize(R.dimen.margin_small_vertical), true));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvScheme.setLayoutManager(linearLayoutManager);
-        mSchemeAdapter = new SchemeAdapter(this, mSetupScheme.getLocations());
-        mSchemeAdapter.setUpdateSelectedState(true);
-        mSchemeAdapter.setSelectedIndex(selectedLocationIndex);
-        mSchemeAdapter.setOnItemClickListener(this);
-        mSchemeAdapter.setOnItemLongClickListener(this);
-        rvScheme.setAdapter(mSchemeAdapter);
+        mSchemeSetupAdapter = new SchemeSetupAdapter(this, mSetupScheme.getLocations());
+        mSchemeSetupAdapter.setUpdateSelectedState(true);
+        mSchemeSetupAdapter.setSelectedIndex(selectedLocationIndex);
+        mSchemeSetupAdapter.setOnItemClickListener(this);
+        mSchemeSetupAdapter.setOnItemLongClickListener(this);
+        rvScheme.setAdapter(mSchemeSetupAdapter);
     }
 
     @Override
@@ -304,14 +304,16 @@ public class SetupActivity
     private void onBackSetupActivity() {
         showSetupFragment(false);
         setTitle(mSetupScheme.getName());
-        int selectedIndex = mSchemeAdapter.getSelectedIndex();
+        int selectedIndex = mSchemeSetupAdapter.getSelectedIndex();
         List<Location> locations = mSetupScheme.getLocations();
         if (selectedIndex > -1 && selectedIndex < locations.size()) {
             Location currentLocation = locations.get(selectedIndex);
-            if (!currentLocation.equals(mSetupFragment.getLocation())) {
+            Location setupLocation = mSetupFragment.getLocation();
+            setupLocation.sortDevices();
+            if (!currentLocation.equals(setupLocation)) {
                 mSchemeChanged = true;
-                locations.set(selectedIndex, mSetupFragment.getLocation());
-                mSchemeAdapter.notifyDataSetChanged();
+                locations.set(selectedIndex, setupLocation);
+                mSchemeSetupAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -334,7 +336,7 @@ public class SetupActivity
                     return false;
                 mSchemeChanged = true;
                 mSetupScheme.getLocations().add(new Location(newValue));
-                mSchemeAdapter.notifyDataSetChanged();
+                mSchemeSetupAdapter.notifyDataSetChanged();
                 break;
             case DIALOG_TAG_RENAME_LOCATION:
                 if (!judgeInputLocationNameEmpty(newValue))
@@ -344,10 +346,10 @@ public class SetupActivity
                 if (!judgeInputLocationNameDuplicated(newValue))
                     return false;
                 mSchemeChanged = true;
-                Location selectedLocation = mSchemeAdapter.getSelectedLocation();
+                Location selectedLocation = mSchemeSetupAdapter.getSelectedLocation();
                 if (selectedLocation != null) {
                     selectedLocation.setName(newValue);
-                    mSchemeAdapter.notifyDataSetChanged();
+                    mSchemeSetupAdapter.notifyDataSetChanged();
                 }
                 break;
         }
@@ -409,7 +411,7 @@ public class SetupActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_rename_location:
-                Location locationToRename = mSchemeAdapter.getSelectedLocation();
+                Location locationToRename = mSchemeSetupAdapter.getSelectedLocation();
                 if (locationToRename != null) {
                     EditDialog dialog = new EditDialog();
                     dialog.show(getSupportFragmentManager(),
@@ -420,10 +422,10 @@ public class SetupActivity
                 mPwLocationOperation.dismiss();
                 break;
             case R.id.tv_delete_location:
-                Location locationToDelete = mSchemeAdapter.getSelectedLocation();
+                Location locationToDelete = mSchemeSetupAdapter.getSelectedLocation();
                 if (locationToDelete != null) {
                     mSetupScheme.getLocations().remove(locationToDelete);
-                    mSchemeAdapter.notifyDataSetChanged();
+                    mSchemeSetupAdapter.notifyDataSetChanged();
                 }
                 mPwLocationOperation.dismiss();
                 break;

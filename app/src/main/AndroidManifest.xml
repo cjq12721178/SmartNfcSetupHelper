@@ -3,7 +3,7 @@
           package="com.weisi.tool.smartnfcsetuphelper">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
         android:allowBackup="true"
@@ -26,6 +26,9 @@
         <activity
             android:name=".ui.activity.SettingActivity"
             android:theme="@style/SettingActivityTheme">
+        </activity>
+        <activity android:name=".ui.activity.InformationActivity"
+            android:label="@string/setup_info">
         </activity>
     </application>
 

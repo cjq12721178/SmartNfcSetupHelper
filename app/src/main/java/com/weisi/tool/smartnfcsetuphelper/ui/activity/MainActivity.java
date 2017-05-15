@@ -11,11 +11,11 @@ import com.weisi.tool.smartnfcsetuphelper.ui.dialog.ConfirmDialog;
 import com.weisi.tool.smartnfcsetuphelper.ui.toast.Prompter;
 import com.weisi.tool.smartnfcsetuphelper.util.Logger;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity
+        extends AppCompatActivity
+        implements View.OnClickListener{
 
     private static final int REQUEST_CODE_SETUP = 1;
-
-    private TouchHandler mTouchHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
         Prompter.init(this);
         Logger.register(this);
-        mTouchHandler = new TouchHandler();
-        findViewById(R.id.btn_start_setup).setOnClickListener(mTouchHandler);
-        findViewById(R.id.tv_setting).setOnClickListener(mTouchHandler);
     }
 
     @Override
@@ -34,25 +31,27 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private class TouchHandler implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.btn_start_setup:
-                    if (SetupProject.getCurrentProjectName(getApplicationContext()) != null) {
-                        startActivityForResult(new Intent(MainActivity.this, SetupActivity.class), REQUEST_CODE_SETUP);
-                    } else {
-                        ConfirmDialog dialog = new ConfirmDialog();
-                        dialog.show(getSupportFragmentManager(),
-                                "no_project_to_setup",
-                                getString(R.string.no_project), false);
-                    }
-                    break;
-                case R.id.tv_setting:
-                    startActivity(new Intent(MainActivity.this, SettingActivity.class));
-                    break;
-            }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_start_setup:
+                if (SetupProject.getCurrentProjectName(getApplicationContext()) != null) {
+                    startActivityForResult(new Intent(MainActivity.this, SetupActivity.class), REQUEST_CODE_SETUP);
+                } else {
+                    ConfirmDialog dialog = new ConfirmDialog();
+                    dialog.show(getSupportFragmentManager(),
+                            "no_project_to_setup",
+                            getString(R.string.no_project), false);
+                }
+                break;
+            case R.id.tv_setup_info:
+                startActivity(new Intent(MainActivity.this, InformationActivity.class));
+                break;
+            case R.id.tv_synchronization:
+                break;
+            case R.id.tv_setting:
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
+                break;
         }
     }
 }

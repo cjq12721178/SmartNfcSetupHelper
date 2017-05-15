@@ -2,12 +2,13 @@ package com.weisi.tool.smartnfcsetuphelper.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 /**
  * Created by KAT on 2017/3/31.
  */
-public class Device implements Parcelable {
+public class Device implements Parcelable, Comparable<Device> {
 
     private String mBleAddress;
     private String mPosition;
@@ -54,10 +55,24 @@ public class Device implements Parcelable {
             return true;
         if (o instanceof Device) {
             Device other = (Device)o;
-            return TextUtils.equals(mBleAddress, other.mBleAddress) &&
-                    TextUtils.equals(mPosition, other.mPosition);
+            return TextUtils.equals(mPosition, other.mPosition) &&
+                    TextUtils.equals(mBleAddress, other.mBleAddress);
         }
         return false;
+    }
+
+    @Override
+    public int compareTo(@NonNull Device o) {
+        int result = stringCompareTo(mPosition, o.mPosition);
+        return result != 0 ? result : stringCompareTo(mBleAddress, o.mBleAddress);
+    }
+
+    private int stringCompareTo(String s1, String s2) {
+        if (s1 != null) {
+            return s2 != null ? s1.compareTo(s2) : 1;
+        } else {
+            return s2 != null ? -1 : 0;
+        }
     }
 
     @Override

@@ -15,14 +15,14 @@ import java.util.List;
  * Created by KAT on 2017/3/31.
  */
 
-public class SchemeAdapter extends RecyclerViewBaseAdapter<SchemeAdapter.ViewHolder> {
+public class SchemeSetupAdapter extends RecyclerViewBaseAdapter<SchemeSetupAdapter.ViewHolder> {
 
     private static final int NORMAL_ITEM_TYPE = 1;
     private static final int FOOTER_ITEM_TYPE = 2;
 
     private List<Location> mLocations;
 
-    public SchemeAdapter(Context context, List<Location> locations) {
+    public SchemeSetupAdapter(Context context, List<Location> locations) {
         mLocations = locations;
     }
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="project_entry">
+        <item name="project_entry_select">启用</item>
+        <item name="project_entry_rename">重命名</item>
+        <item name="project_entry_delete">删除</item>
+    </string-array>
+    <string-array name="setup_positions">
+        <item name="a">@string/setup_position_a</item>
+        <item name="b">@string/setup_position_b</item>
+        <item name="c">@string/setup_position_c</item>
+    </string-array>
+</resources>

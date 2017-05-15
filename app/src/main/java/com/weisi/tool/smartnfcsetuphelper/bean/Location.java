@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public class Location implements Parcelable {
 
-    private static final int DEVICE_COUNT = 3;
+    public static final int DEVICE_COUNT = 3;
     private String mName;
     private Device[] mDevices = new Device[DEVICE_COUNT];
 
@@ -85,6 +85,10 @@ public class Location implements Parcelable {
                 return device;
         }
         return null;
+    }
+
+    public void sortDevices() {
+        Arrays.sort(mDevices);
     }
 
     public void clearDeviceInfo() {
